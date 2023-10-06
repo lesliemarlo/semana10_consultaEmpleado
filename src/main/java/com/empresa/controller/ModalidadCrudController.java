@@ -22,7 +22,7 @@ public class ModalidadCrudController {
 	@Autowired
 	private ModalidadService modalidadService;
 	
-	@RequestMapping("/verCrudModalidad")
+	@GetMapping("/verCrudModalidad")
 	public String verInicio() {
 		return "crudModalidad";
 	}

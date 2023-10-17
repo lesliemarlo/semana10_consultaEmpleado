@@ -119,12 +119,83 @@
 			
 		</div>
 
+
+
+  	<div class="modal fade" id="id_div_modal_actualiza" >
+			<div class="modal-dialog" style="width: 60%">
+		
+				<!-- Modal content-->
+				<div class="modal-content">
+				<div class="modal-header" style="padding: 35px 50px">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4><span class="glyphicon glyphicon-ok-sign"></span> Actualiza Empleado</h4>
+				</div>
+				<div class="modal-body" style="padding: 20px 10px;">
+						<form id="id_form_actualiza" accept-charset="UTF-8" class="form-horizontal"     method="post">
+		                    <div class="panel-group" id="steps">
+		                        <!-- Step 1 -->
+		                        <div class="panel panel-default">
+		                            <div class="panel-heading">
+		                                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#steps" href="#stepOne">Datos de Empleado</a></h4>
+		                            </div>
+		                            <div id="stepOne" class="panel-collapse collapse in">
+		                                <div class="panel-body">
+		                               		 <div class="form-group">
+		                                        <label class="col-lg-3 control-label" for="id_ID">ID</label>
+		                                        <div class="col-lg-8">
+		                                           <input class="form-control" id="id_ID" readonly="readonly" name="idEmpleado" type="text" maxlength="8"/>
+		                                        </div>
+		                                     </div>
+		                                     <div class="form-group">
+		                                        <label class="col-lg-3 control-label" for="id_act_nombres">Nombres</label>
+		                                        <div class="col-lg-8">
+													<input class="form-control" id="id_act_nombres" name="nombres" placeholder="Ingrese el nombre" type="text" maxlength="20"/>
+		                                        </div>
+		                                    </div>
+		                                    <div class="form-group">
+		                                        <label class="col-lg-3 control-label" for="id_act_apellidos">Apellidos</label>
+		                                        <div class="col-lg-8">
+													<input class="form-control" id="id_act_apellidos" name="apellidos" placeholder="Ingrese el apellido" type="text" maxlength="20"/>
+		                                        </div>
+		                                    </div>
+		                                    <div class="form-group">
+		                                        <label class="col-lg-3 control-label" for="id_act_fecha_nacimiento">Fecha Nacimiento</label>
+		                                        <div class="col-lg-3">
+													<input class="form-control" id="id_act_fecha_nacimiento" name="fechaNacimiento" type="date"/>
+		                                        </div>
+		                                    </div>		   
+		                                    <div class="form-group">
+		                                        <label class="col-lg-3 control-label" for="id_act_pais">País</label>
+		                                        <div class="col-lg-6">
+													 <select id="id_act_pais" name="pais" class='form-control'>
+							                            	<option value=" ">[Seleccione]</option>    
+							                         </select>
+		                                        </div>
+		                                    </div>
+		                                    <div class="form-group">
+		                                        <div class="col-lg-9 col-lg-offset-3">
+		                                        	<button type="button" class="btn btn-primary" id="id_btn_actualiza">ACTUALIZA</button>
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                            </div>
+		                        </div>
+		                        
+		                    </div>
+		                </form>   
+				
+				</div>
+			</div>
+		</div>
+			
+		</div>
 </div>
 
 <script type="text/javascript">
 $.getJSON("listaPais", {}, function(data){
 	$.each(data, function(i,item){
 		$("#id_reg_pais").append("<option value="+item.idPais +">"+ item.nombre +"</option>");
+		$("#id_act_pais").append("<option value="+item.idPais +">"+ item.nombre +"</option>");
 	});
 });
 
@@ -201,6 +272,35 @@ $("#id_btn_registra").click(function(){
     }
 });
 
+$("#id_btn_actualiza").click(function(){
+	var validator = $('#id_form_actualiza').data('bootstrapValidator');
+    validator.validate();
+    if (validator.isValid()) {
+        $.ajax({
+          type: "POST",
+          url: "actualizaCrudEmpleado", 
+          data: $('#id_form_actualiza').serialize(),
+          success: function(data){
+        	  agregarGrilla(data.lista);
+        	  $('#id_div_modal_actualiza').modal("hide");
+        	  mostrarMensaje(data.mensaje);
+          },
+          error: function(){
+        	  mostrarMensaje(MSG_ERROR);
+          }
+        });
+    }
+});
+
+function editar(id,nombres,apellidos,fechaNacimiento,idpais){	
+	$('#id_ID').val(id);
+	$('#id_act_nombres').val(nombres);
+	$('#id_act_apellidos').val(apellidos);
+	$('#id_act_fecha_nacimiento').val(fechaNacimiento);
+	$('#id_act_pais').val(idpais);
+	$('#id_div_modal_actualiza').modal("show");
+}
+
 function limpiarFormulario(){	
 	$('#id_reg_nombres').val('');
 	$('#id_reg_apellidos').val('');
@@ -257,6 +357,66 @@ $('#id_form_registra').bootstrapValidator({
         },
         "pais.idPais": {
     		selector : '#id_reg_pais',
+            validators: {
+            	notEmpty: {
+                    message: 'El país un campo obligatorio'
+                },
+            }
+        },
+    	
+    }   
+});
+
+
+$('#id_form_actualiza').bootstrapValidator({
+    message: 'This value is not valid',
+    feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+    },
+    fields: {
+    	"nombres": {
+    		selector : '#id_act_nombres',
+            validators: {
+                notEmpty: {
+                    message: 'El nombre es un campo obligatorio'
+                },
+                stringLength :{
+                	message:'El nombre es de 3 a 100 caracteres',
+                	min : 3,
+                	max : 100
+                }
+            }
+        },
+        "apellidos": {
+    		selector : '#id_act_apellidos',
+            validators: {
+                notEmpty: {
+                    message: 'El apellido es un campo obligatorio'
+                },
+                stringLength :{
+                	message: 'El apellido es de 3 a 100 caracteres',
+                	min : 3,
+                	max : 100
+                }
+            }
+        },
+        "fechaNacimiento": {
+    		selector : '#id_act_fecha_nacimiento',
+            validators: {
+            	notEmpty: {
+                    message: 'La fecha de Nacimiento es un campo obligatorio'
+                },
+                remote :{
+                	delay   : 1000,
+                	url     : 'buscaEmpleadoMayorEdad',
+                	message : 'El empleado debe ser mayor de edad'
+                }
+            }
+        },
+        "pais.idPais": {
+    		selector : '#id_act_pais',
             validators: {
             	notEmpty: {
                     message: 'El país un campo obligatorio'

@@ -12,8 +12,8 @@ import com.empresa.repository.EmpleadoRepository;
 @Service
 public class EmpleadoServiceImpl implements EmpleadoService{
 
-	@Autowired 
-	private EmpleadoRepository  repository;
+	@Autowired
+	private EmpleadoRepository repository;
 	
 	@Override
 	public Empleado insertaEmpleado(Empleado obj) {
@@ -27,7 +27,7 @@ public class EmpleadoServiceImpl implements EmpleadoService{
 
 	@Override
 	public List<Empleado> listaPorNombreApellidoLike(String filtro) {
-		return repository.listaEmpleadoPorNombreApellidoLike(filtro);
+		return repository.listaEmpleadoNombreApellidoLike(filtro);
 	}
 
 	@Override
@@ -37,7 +37,12 @@ public class EmpleadoServiceImpl implements EmpleadoService{
 
 	@Override
 	public List<Empleado> listaPorNombreApellidoIgual(String nombre, String apellido) {
-		return repository.listaEmpleadoPorNombreApellidoIgual(nombre, apellido);
+		return repository.listaEmpleadoNombreApellidoIgual(nombre, apellido);
+	}
+
+	@Override
+	public List<Empleado> listaPorNombreApellidoIgualActualiza(String nombre, String apellido, int idEmpleado) {
+		return repository.listaEmpleadoNombreApellidoIgualActualiza(nombre, apellido, idEmpleado);
 	}
 
 }

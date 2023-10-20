@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.empresa.entity.Empleado;
 import com.empresa.service.EmpleadoService;
+import com.empresa.util.FunctionUtil;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -42,7 +43,11 @@ public class EmpleadoCrudController {
 		obj.setEstado(1);
 		obj.setFechaRegistro(new Date());
 		obj.setFechaActualizacion(new Date()); 
-	
+
+		//Para la PC2
+		//Usuario objUsuario=(Usuario)session.getAttribute("objUsuario");
+		//obj.setUsuarioRegistro(objUsuario);
+		//obj.setUsuarioActualiza(objUsuario);
 		
 		Empleado objSalida = empleadoService.insertaEmpleado(obj);
 		if (objSalida == null) {
@@ -52,8 +57,6 @@ public class EmpleadoCrudController {
 			List<Empleado> lista = empleadoService.listaPorNombreApellidoLike("%");
 			map.put("lista", lista);
 		}
-	
-
 		return map;
 	}
 	
@@ -63,14 +66,15 @@ public class EmpleadoCrudController {
 	public Map<?, ?> actualiza(Empleado obj, HttpSession session) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		  
-
-		
 		Optional<Empleado> optEmpleado= empleadoService.buscaEmpleado(obj.getIdEmpleado());
-			
 		obj.setFechaRegistro(optEmpleado.get().getFechaRegistro());
 		obj.setEstado(optEmpleado.get().getEstado());
 		obj.setFechaActualizacion(new Date());
 		
+		//Para la PC2
+		//Usuario objUsuario=(Usuario)session.getAttribute("objUsuario");
+		//obj.setUsuarioActualiza(objUsuario);
+
 		Empleado objSalida = empleadoService.actualizaEmpleado(obj);
 		if (objSalida == null) {
 			map.put("mensaje", "Error en actualizar");
@@ -99,6 +103,45 @@ public class EmpleadoCrudController {
 		}
 		return map;
 	}
+	
+	@GetMapping("/buscaEmpleadoMayorEdad")
+	@ResponseBody
+	public String validaFecha(String fechaNacimiento) {
+		if(FunctionUtil.isMayorEdad(fechaNacimiento)) {
+			return "{\"valid\":true}";
+		}else {
+			return "{\"valid\":false}";
+		}
+	}
+	
+	@GetMapping("/buscaEmpleadoNombreApellidoRegistro")
+	@ResponseBody
+	public String validaEmpleadoRegistra(String nombres, String apellidos) {
+		List<Empleado> lstSalida = empleadoService.listaPorNombreApellidoIgual(
+													nombres, apellidos);
+		if(lstSalida.isEmpty()) {
+			return "{\"valid\":true}";
+		}else {
+			return "{\"valid\":false}";
+		}
+	}
+	
+	@GetMapping("/buscaEmpleadoNombreApellidoActualiza")
+	@ResponseBody
+	public String validaEmpleadoActualiza(String nombres, String apellidos, String id) {
+		
+		List<Empleado> lstSalida = empleadoService.listaPorNombreApellidoIgualActualiza(
+				nombres, 
+				apellidos,
+				Integer.parseInt(id));
+		
+		if(lstSalida.isEmpty()) {
+			return "{\"valid\":true}";
+		}else {
+			return "{\"valid\":false}";
+		}
+	}
+	
 }
 
 

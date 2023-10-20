@@ -326,6 +326,19 @@ $('#id_form_registra').bootstrapValidator({
                 	message:'El nombre es de 3 a 100 caracteres',
                 	min : 3,
                 	max : 100
+                },
+                remote :{
+                	delay   : 1000,
+                	url     : 'buscaEmpleadoNombreApellidoRegistro',
+                	message : 'El empleado ya existe',
+                	data: {
+    		                nombres: function() {
+    		                    return $('#id_reg_nombres').val();
+    		                },
+    		                apellidos: function() {
+    		                    return $('#id_reg_apellidos').val();
+    		                }
+    		        },
                 }
             }
         },
@@ -339,6 +352,19 @@ $('#id_form_registra').bootstrapValidator({
                 	message: 'El apellido es de 3 a 100 caracteres',
                 	min : 3,
                 	max : 100
+                },
+                remote :{
+                	delay   : 1000,
+                	url     : 'buscaEmpleadoNombreApellidoRegistro',
+                	message : 'El empleado ya existe',
+                	data: {
+    		                nombres: function() {
+    		                    return $('#id_reg_nombres').val();
+    		                },
+    		                apellidos: function() {
+    		                    return $('#id_reg_apellidos').val();
+    		                }
+    		        },
                 }
             }
         },
@@ -386,6 +412,22 @@ $('#id_form_actualiza').bootstrapValidator({
                 	message:'El nombre es de 3 a 100 caracteres',
                 	min : 3,
                 	max : 100
+                },
+                remote :{
+                	delay   : 1000,
+                	url     : 'buscaEmpleadoNombreApellidoActualiza',
+                	message : 'El empleado ya existe',
+                	data: {
+    		                nombres: function() {
+    		                    return $('#id_act_nombres').val();
+    		                },
+    		                apellidos: function() {
+    		                    return $('#id_act_apellidos').val();
+    		                },
+    		                id: function() {
+    		                    return $('#id_ID').val();
+    		                }
+    		        },
                 }
             }
         },
@@ -399,6 +441,22 @@ $('#id_form_actualiza').bootstrapValidator({
                 	message: 'El apellido es de 3 a 100 caracteres',
                 	min : 3,
                 	max : 100
+                },
+                remote :{
+                	delay   : 1000,
+                	url     : 'buscaEmpleadoNombreApellidoActualiza',
+                	message : 'El empleado ya existe',
+                	data: {
+    		                nombres: function() {
+    		                    return $('#id_act_nombres').val();
+    		                },
+    		                apellidos: function() {
+    		                    return $('#id_act_apellidos').val();
+    		                },
+    		                id: function() {
+    		                    return $('#id_ID').val();
+    		                }
+    		        },
                 }
             }
         },

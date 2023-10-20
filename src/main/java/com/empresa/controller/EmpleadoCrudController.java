@@ -74,7 +74,8 @@ public class EmpleadoCrudController {
 		//Para la PC2
 		//Usuario objUsuario=(Usuario)session.getAttribute("objUsuario");
 		//obj.setUsuarioActualiza(objUsuario);
-
+		//obj.setUsuarioRegistro(optEmpleado.get().getFechaRegistro());
+		
 		Empleado objSalida = empleadoService.actualizaEmpleado(obj);
 		if (objSalida == null) {
 			map.put("mensaje", "Error en actualizar");

@@ -2,6 +2,7 @@ package com.empresa.controller;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,26 @@ public class ProveedorRegistraController {
 		return map;
 	}
 	
+	@GetMapping("/buscaProveedorNombre")
+	@ResponseBody
+	public String validaProvedorNombre(String nombre) {
+		List<Proveedor> lstSalida = proveedorService.listaPorNombreIgual(nombre);
+		if(lstSalida.isEmpty()) {
+			return "{\"valid\":true}";
+		}else {
+			return "{\"valid\":false}";
+		}
+	}
 	
+	@GetMapping("/buscaProveedorDNI")
+	@ResponseBody
+	public String validaProvedorDNI(String dni) {
+		List<Proveedor> lstSalida = proveedorService.listaPorDniIgual(dni);
+		if(lstSalida.isEmpty()) {
+			return "{\"valid\":true}";
+		}else {
+			return "{\"valid\":false}";
+		}
+	}
 
 }

@@ -45,6 +45,16 @@ public class ModalidadServiceImpl implements ModalidadService{
 		return repository.buscaPorDeporteEnSede(sede, idDeporte);
 	}
 
+	@Override
+	public List<Modalidad> listaPorNombreIgualRegistra(String nombre) {
+		return repository.listaPorNombreIgualRegistra(nombre);
+	}
+
+	@Override
+	public List<Modalidad> listaPorNombreIgualActualiza(String nombre, int id) {
+		return repository.listaPorNombreIgualActualiza(nombre, id);
+	}
+
 
 
 }

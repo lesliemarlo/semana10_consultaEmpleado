@@ -16,4 +16,7 @@ public interface EmpleadoService {
 	//Validaciones
 	public abstract List<Empleado> listaPorNombreApellidoIgual(String nombre, String apellido); 
 	public abstract List<Empleado> listaPorNombreApellidoIgualActualiza(String nombre, String apellido, int idEmpleado);
+//Consulta SEM 10:
+	public List<Empleado> listaEmpleadoConsulta(int idEstado);
+
 }
